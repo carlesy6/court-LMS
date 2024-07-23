@@ -1,0 +1,128 @@
+/* Apply a background color and image to the whole page */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f8ff; /* Light color for better readability */
+    background-image: url('R.jfif'); /* Update with your image path */
+    background-size: cover; /* Cover the entire page */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Prevent repeating */
+    background-attachment: fixed; /* Fixed background for a parallax effect */
+    color: #37bd0a;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* Content wrapper to push footer to the bottom */
+.content-wrapper {
+    flex: 1;
+}
+
+/* Navigation bar styles */
+.navbar-top {
+    background-color: #004085; /* Dark blue background */
+    padding: 10px; /* Padding around the navbar */
+    text-align: center; /* Center text in navbar */
+}
+
+.navbar-top a {
+    color: #fff; /* White text color */
+    padding: 14px 20px; /* Padding for navbar links */
+    text-decoration: none; /* Remove underline from links */
+    display: inline-block; /* Ensure links are displayed inline */
+}
+
+.navbar-top a:hover {
+    background-color: #00376b; /* Darker blue on hover */
+}
+
+/* Bottom navigation bar styles */
+.navbar-bottom {
+    background-color: #28a745; /* Green background */
+    color: #fff; /* White text color */
+    padding: 10px 0; /* Padding around the navbar */
+    text-align: center; /* Center text in navbar */
+    position: fixed; /* Fixed position at the bottom */
+    bottom: 0;
+    width: 100%; /* Full width */
+    z-index: 1000; /* Ensure it appears above other content */
+}
+
+.navbar-bottom a {
+    color: #fff; /* White text color */
+    margin: 0 10px; /* Spacing between links */
+    text-decoration: none; /* Remove underline from links */
+}
+
+.navbar-bottom a:hover {
+    color: #e2e2e2; /* Light gray on hover */
+}
+
+.navbar-bottom p {
+    margin: 0; /* Remove default margin */
+}
+
+/* Headings styles */
+h1, h2, h3, h4, h5, h6 {
+    color: #1a1a1a; /* Darker text color for headings */
+}
+
+/* Paragraphs and other text */
+p, li {
+    color: #333; /* Standard text color for paragraphs and list items */
+}
+
+/* Links */
+a {
+    color: #0066cc; /* Link color */
+}
+
+a:hover {
+    color: #004080; /* Darker blue for links on hover */
+}
+
+/* Styling for forms */
+form {
+    margin-bottom: 20px;
+}
+
+/* Styling for tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    text-decoration: none;
+}
+
+th {
+    background-color: #f2f2f2; /* Light grey background for table headers */
+    color: #333; /* Text color for table headers */
+}
+
+td.resource-text {
+    color: #ff3300; /* Text color for all resource columns */
+}
+
+/* Additional styles for alerts */
+.alert {
+    margin-top: 20px;
+}
+
+/* Ensure container has some margin from the top and flex-grow for main content */
+.container {
+    margin-top: 50px; /* Adjust as needed */
+}
+
+/* Ensure footer is at the bottom */
+.navbar-bottom {
+    margin-top: auto;
+}
