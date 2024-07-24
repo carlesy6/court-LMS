@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['id'])) {
     header("Location: login.php");
     exit();
 }
@@ -29,57 +29,145 @@ $resources = $stmt->fetchAll();
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
     <title>View Resources</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        .content-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 120px); /* Adjust for navbar height + footer height */
+            width: 100vw;
+            overflow: hidden;
+            margin-top: 60px; /* Adjust for top navbar height */
+        }
+        .table-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .table-responsive {
+            flex: 1; /* Allows the table to take up remaining space */
+        }
+        table {
+            width: 100%;
+            height: 100%;
+            border-collapse: collapse;
+            font-size: 1rem; /* Increase font size */
+        }
+        th, td {
+            padding: 20px; /* Increase cell padding */
+            text-align: left;
+            border: 1px solid #dee2e6; /* Add border for clarity */
+        }
+        th {
+            background-color: black;
+            color: white;
+        }
+        .navbar-bottom {
+            background-color: black;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .navbar-bottom a {
+            margin: 0 5px;
+            color: white;
+        }
+        .navbar-top {
+            background-color: black;
+            padding: 10px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+        .navbar-top .btn {
+            color: white;
+            background-color: transparent;
+            border: none;
+        }
+        .navbar-top .btn:hover {
+            color: #ddd;
+        }
+        .sticky-header {
+            background-color: black;
+            color: white;
+            text-align: left;
+            font-weight: bold;
+            position: sticky; /* Stick to the top */
+            top: 0; /* Align to the top */
+            z-index: 100; /* Ensure it stays on top of other elements */
+        }
+    </style>
 </head>
 <body>
+<div class="navbar-top">
+    <div>
+        <a href="index.php" class="btn btn-secondary">Home</a>
+        <a href="dashboard.php" class="btn btn-secondary">Back</a>
+    </div>
+    <div>
+        <a href="download.php" class="btn btn-primary">Download CSV</a>
+    </div>
+</div>
+
 <div class="content-wrapper">
-    <div class="container">
-        <h2 class="mt-5">View Resources</h2>
-        <table class="table table-striped mt-3">
-            <thead>
-                <tr>
-                    <th>Resource Number</th>
-                    <th>Resource Type</th>
-                    <th>Accession No</th>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>Edition</th>
-                    <th>Volume</th>
-                    <th>Publisher</th>
-                    <th>Year</th>
-                    <th>ISBN</th>
-                    <th>Class</th>
-                    <th>Station</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($resources as $index => $resource): ?>
-                <tr>
-                    <td><?php echo $index + 1; ?></td> <!-- Display sequential number -->
-                    <td><?php echo htmlspecialchars($resource['resource_type'] ?? ''); ?></td>
-                    <td><?php echo htmlspecialchars($resource['accession_no'] ?? ''); ?></td>
-                    <td><?php echo htmlspecialchars($resource['title'] ?? ''); ?></td>
-                    <td><?php echo htmlspecialchars($resource['author'] ?? ''); ?></td>
-                    <td><?php echo htmlspecialchars($resource['edition'] ?? ''); ?></td>
-                    <td><?php echo htmlspecialchars($resource['volume'] ?? ''); ?></td>
-                    <td><?php echo htmlspecialchars($resource['publisher'] ?? ''); ?></td>
-                    <td><?php echo htmlspecialchars($resource['year_of_publication'] ?? ''); ?></td>
-                    <td><?php echo htmlspecialchars($resource['isbn'] ?? ''); ?></td>
-                    <td><?php echo htmlspecialchars($resource['class'] ?? ''); ?></td>
-                    <td><?php echo htmlspecialchars($resource['station'] ?? ''); ?></td>
-                    <td><?php echo htmlspecialchars($resource['status'] ?? ''); ?></td>
-                    <td>
-                        <a href="edit_resource.php?id=<?php echo $resource['id']; ?>" class="btn btn-warning btn-sm">Edit</a>
-                        <a href="?delete_id=<?php echo $resource['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this resource?');">Delete</a>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-        <div class="mt-3">
-            <a href="index.php" class="btn btn-secondary">Home</a>
-            <a href="dashboard.php" class="btn btn-secondary">Back</a>
+    <div class="table-container">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr class="tr">
+                        <th class="sticky-header">Resource Number</th>
+                        <th class="sticky-header">Resource Type</th>
+                        <th class="sticky-header">Accession No</th>
+                        <th class="sticky-header">Title</th>
+                        <th class="sticky-header">Author</th>
+                        <th class="sticky-header">Edition</th>
+                        <th class="sticky-header">Volume</th>
+                        <th class="sticky-header">Publisher</th>
+                        <th class="sticky-header">Year</th>
+                        <th class="sticky-header">ISBN</th>
+                        <th class="sticky-header">Class</th>
+                        <th class="sticky-header">Station</th>
+                        <th class="sticky-header">Status</th>
+                        <th class="sticky-header">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($resources as $index => $resource): ?>
+                    <tr class="resource-row">
+                        <td><?php echo $index + 1; ?></td> <!-- Display sequential number -->
+                        <td><?php echo htmlspecialchars($resource['resource_type'] ?? ''); ?></td>
+                        <td><?php echo htmlspecialchars($resource['accession_no'] ?? ''); ?></td>
+                        <td><?php echo htmlspecialchars($resource['title'] ?? ''); ?></td>
+                        <td><?php echo htmlspecialchars($resource['author'] ?? ''); ?></td>
+                        <td><?php echo htmlspecialchars($resource['edition'] ?? ''); ?></td>
+                        <td><?php echo htmlspecialchars($resource['volume'] ?? ''); ?></td>
+                        <td><?php echo htmlspecialchars($resource['publisher'] ?? ''); ?></td>
+                        <td><?php echo htmlspecialchars($resource['year_of_publication'] ?? ''); ?></td>
+                        <td><?php echo htmlspecialchars($resource['isbn'] ?? ''); ?></td>
+                        <td><?php echo htmlspecialchars($resource['class'] ?? ''); ?></td>
+                        <td><?php echo htmlspecialchars($resource['station'] ?? ''); ?></td>
+                        <td><?php echo htmlspecialchars($resource['status'] ?? ''); ?></td>
+                        <td>
+                            <a href="edit_resource.php?id=<?php echo $resource['id']; ?>" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="?delete_id=<?php echo $resource['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this resource?');">Delete</a>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

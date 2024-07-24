@@ -86,7 +86,7 @@
         }
 
         td.resource-text {
-            color: #ff3300; /* Text color for all resource columns */
+            color: white; /* Text color for all resource columns */
         }
 
         /* Additional styles for alerts */
@@ -112,8 +112,10 @@
         <a href="index.php">Home</a>
         <a href="register.php">Register</a>
         <a href="login.php">Login</a>
-        <a href="view_resources.php">View Resources</a>
+        <a href="dashboard.php">Dashboard</a>
+        <a href="view_resources.php">View resources</a>
         <a href="add_resource.php">Add Resource</a>
+
     </div>
 
     <div class="container">

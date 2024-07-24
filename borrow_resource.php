@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['id'])) {
     header("Location: login.php");
     exit();
 }
@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_borrow'])) {
     $resource_title = $_POST['resource_title'];
     $resource_author = $_POST['resource_author'];
     $resource_isbn = $_POST['resource_isbn'];
-    $user_id = $_SESSION['user_id'];
+    $id = $_SESSION['id'];
 
     $pdo->beginTransaction();
     
@@ -35,13 +35,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_borrow'])) {
         $stmt->execute([$resource_id]);
 
         if ($stmt->rowCount() > 0) {
-            $stmt = $pdo->prepare("INSERT INTO transactions (user_id, resource_id, action) VALUES (?, ?, 'borrowed')");
-            $stmt->execute([$user_id, $resource_id]);
+            $stmt = $pdo->prepare("INSERT INTO transactions (id, resource_id, action) VALUES (?, ?, 'borrowed')");
+            $stmt->execute([$id, $resource_id]);
 
             // Update client details in clients table
-            $stmt = $pdo->prepare("INSERT INTO clients (user_id, name, id_no, phone) VALUES (?, ?, ?, ?)
+            $stmt = $pdo->prepare("INSERT INTO clients (id, name, id_no, phone) VALUES (?, ?, ?, ?)
                 ON DUPLICATE KEY UPDATE name = VALUES(name), id_no = VALUES(id_no), phone = VALUES(phone)");
-            $stmt->execute([$user_id, $client_name, $client_id_no, $client_phone]);
+            $stmt->execute([$id, $client_name, $client_id_no, $client_phone]);
 
             $pdo->commit();
             echo "<div class='alert alert-success'>Resource borrowed successfully!</div>";

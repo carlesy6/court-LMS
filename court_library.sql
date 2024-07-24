@@ -72,7 +72,7 @@ DELIMITER ;
 
 CREATE TABLE `transactions` (
   `id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
+  `id` int(11) DEFAULT NULL,
   `resource_id` int(11) DEFAULT NULL,
   `action` enum('borrowed','returned') DEFAULT NULL,
   `transaction_date` timestamp NOT NULL DEFAULT current_timestamp()
@@ -115,7 +115,7 @@ ALTER TABLE `resources`
 --
 ALTER TABLE `transactions`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`),
+  ADD KEY `id` (`id`),
   ADD KEY `resource_id` (`resource_id`);
 
 --
@@ -155,7 +155,7 @@ ALTER TABLE `users`
 -- Constraints for table `transactions`
 --
 ALTER TABLE `transactions`
-  ADD CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `transactions_ibfk_2` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`);
 COMMIT;
 

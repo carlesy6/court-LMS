@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'admin') {
     header("Location: login.php");
     exit(); // Ensure no further code is executed after redirection
 }

@@ -65,12 +65,12 @@ body {
 
 /* Headings styles */
 h1, h2, h3, h4, h5, h6 {
-    color: #1a1a1a; /* Darker text color for headings */
+    color: white; /* Text color for headings */
 }
 
 /* Paragraphs and other text */
 p, li {
-    color: #333; /* Standard text color for paragraphs and list items */
+    color: white; /* Standard text color for paragraphs and list items */
 }
 
 /* Links */
@@ -100,12 +100,11 @@ table, th, td {
 th, td {
     padding: 8px;
     text-align: left;
-    text-decoration: none;
 }
 
 th {
-    background-color: #f2f2f2; /* Light grey background for table headers */
-    color: #333; /* Text color for table headers */
+    background-color: #004085; /* Dark blue background for table headers */
+    color: white; /* White color for table headers */
 }
 
 td.resource-text {
@@ -126,3 +125,16 @@ td.resource-text {
 .navbar-bottom {
     margin-top: auto;
 }
+
+
+/* styles.css */
+.form-control {
+    color: white;
+    background-color: #333; /* Optional dark background */
+}
+.resource-row {
+    color: rgb(39, 158, 55);
+    font-weight: bold; /* Make text bold */
+    font-size: 20px;
+}
+
