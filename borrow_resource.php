@@ -15,42 +15,53 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_borrow'])) {
     $resource_title = $_POST['resource_title'];
     $resource_author = $_POST['resource_author'];
     $resource_isbn = $_POST['resource_isbn'];
-    $id = $_SESSION['id'];
+    $user_id = $_SESSION['id'];
 
     $pdo->beginTransaction();
-    
-    // Search for the resource with provided details
-    $stmt = $pdo->prepare("SELECT * FROM resources WHERE 
-        (accession_no = ? OR ? = '') AND
-        (title LIKE ? OR ? = '') AND
-        (author LIKE ? OR ? = '') AND
-        (isbn = ? OR ? = '') AND
-        status = 'available'");
-    $stmt->execute([$resource_accession_no, $resource_accession_no, "%$resource_title%", $resource_title, "%$resource_author%", $resource_author, $resource_isbn, $resource_isbn]);
-    $resource = $stmt->fetch();
 
-    if ($resource) {
-        $resource_id = $resource['id'];
-        $stmt = $pdo->prepare("UPDATE resources SET status = 'borrowed' WHERE id = ? AND status = 'available'");
-        $stmt->execute([$resource_id]);
+    try {
+        // Search for the resource with provided details
+        $stmt = $pdo->prepare("SELECT * FROM resources WHERE 
+            (accession_no = ? OR ? = '') AND
+            (title LIKE ? OR ? = '') AND
+            (author LIKE ? OR ? = '') AND
+            (isbn = ? OR ? = '') AND
+            status = 'available'");
+        $stmt->execute([$resource_accession_no, $resource_accession_no, "%$resource_title%", $resource_title, "%$resource_author%", $resource_author, $resource_isbn, $resource_isbn]);
+        $resource = $stmt->fetch();
 
-        if ($stmt->rowCount() > 0) {
-            $stmt = $pdo->prepare("INSERT INTO transactions (id, resource_id, action) VALUES (?, ?, 'borrowed')");
-            $stmt->execute([$id, $resource_id]);
+        if ($resource) {
+            $resource_id = $resource['id'];
 
-            // Update client details in clients table
-            $stmt = $pdo->prepare("INSERT INTO clients (id, name, id_no, phone) VALUES (?, ?, ?, ?)
-                ON DUPLICATE KEY UPDATE name = VALUES(name), id_no = VALUES(id_no), phone = VALUES(phone)");
-            $stmt->execute([$id, $client_name, $client_id_no, $client_phone]);
+            // Update the resource status to 'borrowed'
+            $stmt = $pdo->prepare("UPDATE resources SET status = 'borrowed' WHERE id = ? AND status = 'available'");
+            $stmt->execute([$resource_id]);
 
-            $pdo->commit();
-            echo "<div class='alert alert-success'>Resource borrowed successfully!</div>";
+            if ($stmt->rowCount() > 0) {
+                // Insert the borrow transaction
+                $stmt = $pdo->prepare("INSERT INTO transactions (resource_id, action, user_id) VALUES (?, 'borrowed', ?)");
+                $stmt->execute([$resource_id, $user_id]);
+
+                // Update or insert client details in clients table
+                $stmt = $pdo->prepare("INSERT INTO clients (id, name, id_no, phone) VALUES (?, ?, ?, ?)
+                    ON DUPLICATE KEY UPDATE name = VALUES(name), id_no = VALUES(id_no), phone = VALUES(phone)");
+                $stmt->execute([$user_id, $client_name, $client_id_no, $client_phone]);
+
+                $pdo->commit();
+                // Redirect to borrowed_resources.php
+                header("Location: borrowed_resources.php");
+                exit(); // Ensure no further code is executed
+            } else {
+                $pdo->rollBack();
+                echo "<div class='alert alert-danger'>Resource is not available!</div>";
+            }
         } else {
-            $pdo->rollBack();
-            echo "<div class='alert alert-danger'>Resource is not available!</div>";
+            echo "<div class='alert alert-danger'>No matching resource found!</div>";
         }
-    } else {
-        echo "<div class='alert alert-danger'>No matching resource found!</div>";
+    } catch (PDOException $e) {
+        $pdo->rollBack();
+        error_log($e->getMessage());
+        echo "<div class='alert alert-danger'>Error: " . $e->getMessage() . "</div>";
     }
 }
 ?>
@@ -65,6 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_borrow'])) {
     <title>Borrow Resource</title>
 </head>
 <body>
+
 <div class="content-wrapper">
     <div class="container">
         <h2 class="mt-5">Borrow Resource</h2>
@@ -110,13 +122,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_borrow'])) {
 </div>
 
 <div class="navbar-bottom">
-    <p>&copy; 2024 Meru Law Court Library Management Syemst | 
-    
+    <p>&copy; 2024 Meru Law Court Library Management System |
         <div class="social-icons">
         Contact us at: <i class="fas fa-phone-alt"></i> <a href="tel:+254722790240">+254 722 790 240</a> |
             <a href="mailto:catemuthoni19@gmail.com"><i class="fas fa-envelope"></i> Email</a> |
             <a href="https://wa.me/0722790240"><i class="fab fa-whatsapp"></i> WhatsApp</a> |
-           
+        </div>
+    </p>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

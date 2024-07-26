@@ -12,7 +12,7 @@
         /* Apply a background color and image to the whole page */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f8ff; /* Light color for better readability */
+            background-color: green; /* Light color for better readability */
             background-image: url('R.jfif'); /* Update with your image path */
             background-size: cover; /* Cover the entire page */
             background-position: center; /* Center the image */
@@ -45,11 +45,12 @@
         /* Headings styles */
         h1, h2, h3, h4, h5, h6 {
             color: black; 
+            border-block-color: blue;
         }
 
         /* Paragraphs and other text */
         p, li {
-            color: #333; /* Standard text color for paragraphs and list items */
+            color: white;
         }
 
         /* Links */

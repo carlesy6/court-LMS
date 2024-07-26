@@ -37,9 +37,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->execute([$resource_id]);
 
         if ($stmt->rowCount() > 0) {
-            // Record the return transaction
-            $stmt = $pdo->prepare("INSERT INTO transactions (id, resource_id, action) VALUES (?, ?, 'returned')");
-            $stmt->execute([$id, $resource_id]);
+            // Record the return transaction without specifying the primary key
+            $stmt = $pdo->prepare("INSERT INTO transactions (resource_id, action) VALUES (?, 'returned')");
+            $stmt->execute([$resource_id]);
 
             // Update client details in clients table
             $stmt = $pdo->prepare("INSERT INTO clients (id, name, id_no, phone) VALUES (?, ?, ?, ?)

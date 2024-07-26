@@ -26,6 +26,7 @@ include 'db.php';
             <a href="view_resources.php" class="list-group-item list-group-item-action">View Resources</a>
             <a href="borrow_resource.php" class="list-group-item list-group-item-action">Borrow Resource</a>
             <a href="return_resource.php" class="list-group-item list-group-item-action">Return Resource</a>
+            <a href="borrowed_resources.php" class="list-group-item list-group-item-action">View Borrowed Resources</a> <!-- New Button -->
         </div>
         <div class="mt-3">
             <a href="index.php" class="btn btn-secondary">Home</a>
@@ -35,14 +36,12 @@ include 'db.php';
 </div>
 
 <div class="navbar-bottom">
-    <p>&copy; 2024 Meru Law Court Library Management System | 
-   
+    <p>&copy; 2024 Meru Law Court Library Management System |
         <div class="social-icons">
         Contact us at: <i class="fas fa-phone-alt"></i> <a href="tel:+254722790240">+254 722 790 240</a> |
             <a href="mailto:catemuthoni19@gmail.com"><i class="fas fa-envelope"></i> Email</a> |
             <a href="https://wa.me/0722790240"><i class="fab fa-whatsapp"></i> WhatsApp</a> |
-           
-           
+    </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
