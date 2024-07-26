@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meru Law Court Library Management System</title>
+    <title>MERU LAW COURT LIBRARY MANAGEMENT SYSTEM</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css"> <!-- Link to custom CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Font Awesome for social media icons -->
     <style>
         /* Apply a background color and image to the whole page */
         body {
@@ -16,7 +18,7 @@
             background-position: center; /* Center the image */
             background-repeat: no-repeat; /* Prevent repeating */
             background-attachment: fixed; /* Fixed background for a parallax effect */
-            color: #37bd0a;
+            color: black;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -42,7 +44,7 @@
 
         /* Headings styles */
         h1, h2, h3, h4, h5, h6 {
-            color: green; /* Darker text color for headings */
+            color: black; 
         }
 
         /* Paragraphs and other text */
@@ -104,6 +106,18 @@
         .navbar-bottom {
             margin-top: auto;
         }
+
+        /* Social media icon styles */
+        .social-icons a {
+            font-size: 20px; /* Increase the icon size */
+            color: white; /* Icon color */
+            margin: 0 10px; /* Space between icons */
+            transition: color 0.3s ease; /* Smooth color transition */
+        }
+
+        .social-icons a:hover {
+            color: #f0f8ff; /* Icon color on hover */
+        }
     </style>
 </head>
 <body>
@@ -115,13 +129,13 @@
         <a href="dashboard.php">Dashboard</a>
         <a href="view_resources.php">View resources</a>
         <a href="add_resource.php">Add Resource</a>
-
     </div>
 
     <div class="container">
         <div class="text-center mt-5">
-            <h1 class="display-4">Meru Law Court Library Management System</h1>
-            <p class="lead">Welcome to Meru Law Court.</p> <p class="lead" >The Foundation of Justice And Knowledge.</p>
+            <h1 class="display-4">MERU LAW COURT LIBRARY MANAGEMENT SYSTEM</h1>
+            <p class="lead">Welcome to Meru Law Court.</p> 
+            <p class="lead">The Foundation of Justice And Knowledge.</p>
         </div>
 
         <div class="text-center mt-4">
@@ -133,12 +147,11 @@
     <!-- Bottom Navigation Bar -->
     <div class="navbar-bottom">
         <p>&copy; 2024 Meru Law Court Library Management System. All rights reserved.</p>
-        <div>
-        <a href="https://email.com" target="_blank">Email</a> |
-            <a href="https://facebook.com" target="_blank">Facebook</a> |
-            <a href="https://wa.me/yourphonenumber">WhatsApp</a> | 
-            <a href="https://twitter.com" target="_blank">Twitter</a> |
-            <a href="https://instagram.com" target="_blank">Instagram</a>
+        Contact us at: <i class="fas fa-phone-alt"></i> <a href="tel:+254722790240">+254 722 790 240</a>
+        <div class="social-icons">
+            <a href="mailto:catemuthoni@gmail.com"><i class="fas fa-envelope"></i> Email</a> |
+            <a href="https://wa.me/0722790240"><i class="fab fa-whatsapp"></i> WhatsApp</a> |
+            
         </div>
     </div>
 

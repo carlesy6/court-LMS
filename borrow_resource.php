@@ -110,11 +110,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_borrow'])) {
 </div>
 
 <div class="navbar-bottom">
-    <p>&copy; 2024 Meru Law Court Library Management Syemst | <a href="mailto:youremail@example.com">Email</a> | 
-    <a href="https://facebook.com/yourprofile">Facebook</a> | 
-    <a href="https://instagram.com/yourprofile">Instagram</a> | 
-    <a href="https://wa.me/yourphonenumber">WhatsApp</a> | 
-    <a href="https://twitter.com/yourprofile">Twitter</a></p>
+    <p>&copy; 2024 Meru Law Court Library Management Syemst | 
+    
+        <div class="social-icons">
+        Contact us at: <i class="fas fa-phone-alt"></i> <a href="tel:+254722790240">+254 722 790 240</a> |
+            <a href="mailto:catemuthoni19@gmail.com"><i class="fas fa-envelope"></i> Email</a> |
+            <a href="https://wa.me/0722790240"><i class="fab fa-whatsapp"></i> WhatsApp</a> |
+           
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
