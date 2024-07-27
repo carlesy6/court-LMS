@@ -35,7 +35,7 @@ $resources = $stmt->fetchAll();
     <link rel="stylesheet" href="styles.css">
     <title>View Case Books</title>
     <style>
-         html, body {
+        html, body {
             height: 100%;
             margin: 0;
             font-size: 14px; /* Slightly smaller base font size */
@@ -70,8 +70,8 @@ $resources = $stmt->fetchAll();
             border: 1px solid #dee2e6; /* Add border for clarity */
             vertical-align: middle; /* Center text vertically */
             height: 30px; /* Set specific height for rows */
-            overflow: hidden; /* Hide overflow text */
-            text-overflow: ellipsis; /* Add ellipsis to overflowing text */
+            overflow: scroll; /* Hide overflow text */
+            text-overflow: clip; /* Add ellipsis to overflowing text */
             white-space: nowrap; /* Prevent text wrapping */
         }
         th {
@@ -126,6 +126,21 @@ $resources = $stmt->fetchAll();
             font-size: 0.8rem; /* Smaller button text */
             padding: 2px 5px; /* Reduced button padding */
         }
+        /* Search bar styles */
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            margin-top: 20px; /* Space for the search bar */
+        }
+        .search-bar input[type="text"] {
+            width: 60%;
+            max-width: 400px;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -141,6 +156,12 @@ $resources = $stmt->fetchAll();
 
 <div class="content-wrapper">
     <div class="table-container">
+
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search for resources..." onkeyup="filterResources()">
+        </div>
+
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
@@ -161,7 +182,7 @@ $resources = $stmt->fetchAll();
                         <th class="sticky-header">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="resourceTableBody">
                     <?php foreach ($resources as $index => $resource): ?>
                     <tr class="resource-row">
                         <td><?php echo $index + 1; ?></td> <!-- Display sequential number -->
@@ -201,5 +222,36 @@ $resources = $stmt->fetchAll();
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    // JavaScript for filtering resources
+    function filterResources() {
+        const searchInput = document.getElementById('searchInput').value.toLowerCase();
+        const tableBody = document.getElementById('resourceTableBody');
+        const resourceRows = tableBody.getElementsByClassName('resource-row');
+
+        for (let i = 0; i < resourceRows.length; i++) {
+            const row = resourceRows[i];
+            const cells = row.getElementsByTagName('td');
+            let matchFound = false;
+
+            for (let j = 0; j < cells.length; j++) {
+                const cell = cells[j];
+                const cellText = cell.textContent || cell.innerText;
+
+                if (cellText.toLowerCase().includes(searchInput)) {
+                    matchFound = true;
+                    break;
+                }
+            }
+
+            if (matchFound) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        }
+    }
+</script>
 </body>
 </html>

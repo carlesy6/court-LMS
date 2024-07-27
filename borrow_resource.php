@@ -38,8 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_borrow'])) {
             $stmt->execute([$resource_id]);
 
             if ($stmt->rowCount() > 0) {
-                // Insert the borrow transaction
-                $stmt = $pdo->prepare("INSERT INTO transactions (resource_id, action, user_id) VALUES (?, 'borrowed', ?)");
+                // Insert the borrow transaction with borrowed_on date
+                $stmt = $pdo->prepare("INSERT INTO transactions (resource_id, action, user_id, borrowed_on) VALUES (?, 'borrowed', ?, NOW())");
                 $stmt->execute([$resource_id, $user_id]);
 
                 // Update or insert client details in clients table
@@ -116,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_borrow'])) {
 
         <div class="mt-3">
             <a href="index.php" class="btn btn-secondary">Home</a>
-            <a href="dashboard.php" class="btn btn-secondary">Back</a>
+            <a href="librarian_dashboard.php" class="btn btn-secondary">Back</a>
         </div>
     </div>
 </div>

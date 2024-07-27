@@ -191,7 +191,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <div class="mt-3">
             <a href="index.php" class="btn btn-secondary">Home</a>
-            <a href="dashboard.php" class="btn btn-secondary">Back</a>
+            <a href="librarian_dashboard.php" class="btn btn-secondary">Back</a>
         </div>
     </div>
 
