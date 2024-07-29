@@ -7,9 +7,9 @@ if (!isset($_SESSION['id'])) {
     exit();
 }
 
-// Check if the user is an admin
-if ($_SESSION['role'] !== 'admin') {
-    header("Location: Bound_High_Court_Decision.php"); // Redirect to home or another appropriate page
+// Check if the user is an admin or librarian
+if ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'librarian') {
+    header("Location: unauthorized.php"); // Redirect to an unauthorized access page
     exit();
 }
 
