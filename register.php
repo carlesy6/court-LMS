@@ -17,6 +17,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 
+    // Validate password strength
+    if (!isPasswordStrong($password)) {
+        echo "Password does not meet the required strength criteria!";
+        exit;
+    }
+
     // Hash password for security
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
@@ -51,6 +57,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->close();
 }
 
+// Function to check password strength
+function isPasswordStrong($password) {
+    $hasUppercase = preg_match('/[A-Z]/', $password);
+    $hasLowercase = preg_match('/[a-z]/', $password);
+    $hasDigit = preg_match('/[0-9]/', $password);
+    $hasSpecialChar = preg_match('/[\W]/', $password);
+    $hasMinLength = strlen($password) >= 8;
+
+    return $hasUppercase && $hasLowercase && $hasDigit && $hasSpecialChar && $hasMinLength;
+}
 ?>
 
 <!DOCTYPE html>
@@ -95,7 +111,60 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             display: inline-block;
             margin-top: 10px;
         }
+        .strength {
+            margin: 8px 0;
+            font-weight: bold;
+            color: red;
+        }
+        .toggle-password {
+            margin: 8px 0;
+            display: inline-block;
+            cursor: pointer;
+            color: #4CAF50;
+        }
+        .toggle-password:hover {
+            color: #45a049;
+        }
     </style>
+    <script>
+        function checkPasswordStrength() {
+            var password = document.getElementById('password').value;
+            var strengthMessage = document.getElementById('strengthMessage');
+
+            // Regular expressions for password checks
+            var hasUppercase = /[A-Z]/.test(password);
+            var hasLowercase = /[a-z]/.test(password);
+            var hasDigit = /[0-9]/.test(password);
+            var hasSpecialChar = /[\W]/.test(password);
+            var hasMinLength = password.length >= 8;
+
+            // Count the number of criteria met
+            var strengthCount = hasUppercase + hasLowercase + hasDigit + hasSpecialChar + hasMinLength;
+
+            // Update strength message based on the number of criteria met
+            if (strengthCount === 5) {
+                strengthMessage.style.color = 'green';
+                strengthMessage.textContent = 'Strong Password';
+            } else if (strengthCount >= 3) {
+                strengthMessage.style.color = 'orange';
+                strengthMessage.textContent = 'Moderate Password';
+            } else {
+                strengthMessage.style.color = 'red';
+                strengthMessage.textContent = 'Weak Password';
+            }
+        }
+
+        function togglePasswordVisibility(inputId, checkboxId) {
+            var inputField = document.getElementById(inputId);
+            var checkbox = document.getElementById(checkboxId);
+
+            if (checkbox.checked) {
+                inputField.type = 'text';
+            } else {
+                inputField.type = 'password';
+            }
+        }
+    </script>
 </head>
 <body>
     <h2>Register</h2>
@@ -113,10 +182,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <input type="email" name="email" required><br>
 
         <label>Password:</label>
-        <input type="password" name="password" required><br>
+        <input type="password" id="password" name="password" required onkeyup="checkPasswordStrength()"><br>
+        <input type="checkbox" id="togglePassword" onclick="togglePasswordVisibility('password', 'togglePassword')">
+        <label class="toggle-password" for="togglePassword">Show Password</label><br>
+        <div id="strengthMessage" class="strength">Weak Password</div>
 
         <label>Confirm Password:</label>
-        <input type="password" name="confirm_password" required><br>
+        <input type="password" id="confirm_password" name="confirm_password" required><br>
+        <input type="checkbox" id="toggleConfirmPassword" onclick="togglePasswordVisibility('confirm_password', 'toggleConfirmPassword')">
+        <label class="toggle-password" for="toggleConfirmPassword">Show Password</label><br>
 
         <label>Register as:</label>
         <select name="role" required>

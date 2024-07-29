@@ -79,11 +79,13 @@ $resources = $stmt->fetchAll();
             border-collapse: collapse;
             font-size: 0.9rem; /* Smaller font size */
             table-layout: fixed; /* Force fixed-width cells */
+            background-color: #343a40; /* Dark background for table */
+            color: #ffffff; /* White text color */
         }
         th, td {
             padding: 4px 6px; /* Reduced padding for smaller cells */
             text-align: left;
-            border: 1px solid #dee2e6; /* Add border for clarity */
+            border: 1px solid #495057; /* Darker border color for contrast */
             vertical-align: middle; /* Center text vertically */
             height: 30px; /* Set specific height for rows */
             overflow: scroll; /* Hide overflow text */
@@ -91,7 +93,7 @@ $resources = $stmt->fetchAll();
             white-space: nowrap; /* Prevent text wrapping */
         }
         th {
-            background-color: black;
+            background-color: #495057; /* Darker background for headers */
             color: white;
             font-weight: bold;
             height: 35px; /* Specific height for header rows */
@@ -157,6 +159,16 @@ $resources = $stmt->fetchAll();
             border: 1px solid #ccc;
             font-size: 14px;
         }
+        /* Reduced size for Resource Number column */
+        .col-resource-number {
+            width: 10%; /* Adjust as needed */
+        }
+        .col-index-number {
+            width: 30%; /* Adjust as needed */
+        }
+        .col-actions {
+            width: 20%; /* Adjust as needed */
+        }
     </style>
 </head>
 <body>
@@ -189,9 +201,9 @@ $resources = $stmt->fetchAll();
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th class="sticky-header">Resource Number</th>
-                        <th class="sticky-header">Index Number</th>
-                        <th class="sticky-header">Actions</th>
+                        <th class="sticky-header col-resource-number">Resource Number</th>
+                        <th class="sticky-header col-index-number">Index Number</th>
+                        <th class="sticky-header col-actions">Actions</th>
                     </tr>
                 </thead>
                 <tbody id="resourceTableBody">
