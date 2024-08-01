@@ -27,34 +27,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
     // Check if username or email already exists
-    $check_stmt = $conn->prepare("SELECT username, email FROM users WHERE username = ? OR email = ?");
-    $check_stmt->bind_param("ss", $username, $email);
-    $check_stmt->execute();
-    $check_stmt->store_result();
+    $check_stmt = $pdo->prepare("SELECT username, email FROM users WHERE username = ? OR email = ?");
+    $check_stmt->execute([$username, $email]);
 
-    if ($check_stmt->num_rows > 0) {
+    if ($check_stmt->rowCount() > 0) {
         echo "Username or Email already exists!";
         exit;
     }
 
     // Insert user data into the appropriate table
     if ($role == 'librarian') {
-        $stmt = $conn->prepare("INSERT INTO librarians (full_name, username, phone, email, password) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssss", $full_name, $username, $phone, $email, $hashed_password);
+        $stmt = $pdo->prepare("INSERT INTO librarians (full_name, username, phone, email, password) VALUES (?, ?, ?, ?, ?)");
+        $stmt->execute([$full_name, $username, $phone, $email, $hashed_password]);
     } else {
         // Ensure 'admin' role is handled correctly
-        $stmt = $conn->prepare("INSERT INTO users (full_name, username, phone, email, password, role) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssss", $full_name, $username, $phone, $email, $hashed_password, $role);
+        $stmt = $pdo->prepare("INSERT INTO users (full_name, username, phone, email, password, role) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$full_name, $username, $phone, $email, $hashed_password, $role]);
     }
 
-    if ($stmt->execute()) {
+    if ($stmt->rowCount() > 0) {
         echo "Registration successful!";
     } else {
-        echo "Error: " . $stmt->error;
+        echo "Error: " . $stmt->errorInfo()[2];
     }
-
-    // Close the statement
-    $stmt->close();
 }
 
 // Function to check password strength

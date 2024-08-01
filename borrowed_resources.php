@@ -9,7 +9,7 @@ $stmt = $pdo->prepare("SELECT r.accession_no, r.title, r.author, r.isbn, t.borro
                        WHERE t.action = 'borrowed' 
                        ORDER BY t.borrowed_on DESC");
 $stmt->execute();
-$borrowedResources = $stmt->fetchAll();
+$borrowedResources = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -186,7 +186,7 @@ $borrowedResources = $stmt->fetchAll();
             const cols = row.querySelectorAll('td, th');
             const csvRow = [];
 
-            cols.forEach(col => csvRow.push(col.innerText));
+            cols.forEach(col => csvRow.push('"' + col.innerText.replace(/"/g, '""') + '"'));
             csvContent += csvRow.join(',') + '\r\n';
         });
 

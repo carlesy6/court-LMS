@@ -1,29 +1,27 @@
 <?php
 session_start();
-if (!isset($_SESSION['id'])) {
+if (!isset($_SESSION['user_id']) || ($_SESSION['role'] !== 'librarian' && $_SESSION['role'] !== 'admin')) {
     header("Location: login.php");
     exit();
 }
 
-include 'db.php';
+include 'db.php'; // Ensure $pdo is available in this script
 
 // Handle deletion
 if (isset($_GET['delete_id'])) {
     $delete_id = intval($_GET['delete_id']);
-    
-    // Prepare and execute the deletion query
     $stmt = $pdo->prepare("DELETE FROM resources WHERE id = ?");
     $stmt->execute([$delete_id]);
 
     // Redirect to avoid re-submission and to refresh the list
-    header("Location: case_books.php"); 
+    header("Location: view_resources.php"); 
     exit();
 }
 
 // Fetch resources of type Case Book
 $stmt = $pdo->prepare("SELECT * FROM resources WHERE resource_type = 'Case Book' ORDER BY id");
 $stmt->execute();
-$resources = $stmt->fetchAll();
+$resources = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -38,7 +36,7 @@ $resources = $stmt->fetchAll();
         html, body {
             height: 100%;
             margin: 0;
-            font-size: 14px; /* Slightly smaller base font size */
+            font-size: 16px; /* Slightly smaller base font size */
         }
         .content-wrapper {
             display: flex;
@@ -46,7 +44,7 @@ $resources = $stmt->fetchAll();
             align-items: center;
             height: calc(100vh - 120px); /* Adjust for navbar height + footer height */
             width: 100vw;
-            overflow: scroll;
+            overflow: auto; /* Changed to auto to handle scrolling properly */
             margin-top: 60px; /* Adjust for top navbar height */
         }
         .table-container {
@@ -61,26 +59,31 @@ $resources = $stmt->fetchAll();
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.9rem; /* Smaller font size */
-            table-layout: fixed; /* Force fixed-width cells */
+            font-size: 0.8rem; /* Smaller font size */
+            table-layout: auto; /* Allow table to automatically adjust to its content */
             background-color: #343a40; /* Dark background for table */
             color: #ffffff; /* White text color */
+            font-family: 'Arial', sans-serif; /* Table font style */
         }
         th, td {
-            padding: 4px 6px; /* Reduced padding for smaller cells */
+            padding: 6px 10px; /* Adjusted padding for better visibility */
             text-align: left;
             border: 1px solid #495057; /* Darker border color for contrast */
-            vertical-align: middle; /* Center text vertically */
-            height: 30px; /* Set specific height for rows */
-            overflow: scroll; /* Hide overflow text */
-            text-overflow: clip; /* Add ellipsis to overflowing text */
-            white-space: nowrap; /* Prevent text wrapping */
+            vertical-align: top; /* Align text to the top */
+            height: auto; /* Allow dynamic height for rows */
+            overflow: visible; /* Ensure content overflow is visible */
+            text-overflow: ellipsis; /* Add ellipsis to overflowing text */
+            white-space: normal; /* Allow text to wrap */
+            word-wrap: break-word; /* Break words to fit within the cell */
+            font-family: 'Verdana', sans-serif; /* Table cell font style */
+            font-size: 0.75rem; /* Smaller text size for table content */
+            line-height: 1.5; /* Increase line height for readability */
         }
         th {
             background-color: #495057; /* Darker background for headers */
             color: white;
             font-weight: bold;
-            height: 35px; /* Specific height for header rows */
+            height: 40px; /* Increased height for header rows */
         }
         .navbar-bottom {
             background-color: black;
@@ -123,6 +126,9 @@ $resources = $stmt->fetchAll();
             position: sticky; /* Stick to the top */
             top: 0; /* Align to the top */
             z-index: 100; /* Ensure it stays on top of other elements */
+            font-family: 'Verdana', sans-serif; /* Header font style */
+            font-size: 0.8rem; /* Smaller header text size */
+            line-height: 1.5; /* Increased line height for headers */
         }
         .btn-sm {
             font-size: 0.8rem; /* Smaller button text */

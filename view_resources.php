@@ -1,6 +1,8 @@
 <?php
 session_start();
-if (!isset($_SESSION['id'])) {
+
+// Correct session check
+if (!isset($_SESSION['user_id']) || ($_SESSION['role'] !== 'librarian' && $_SESSION['role'] !== 'admin')) {
     header("Location: login.php");
     exit();
 }
@@ -72,6 +74,7 @@ if (isset($_GET['delete_id'])) {
         .navbar-bottom a {
             margin: 0 5px;
             color: white;
+            text-decoration: none;
         }
         .navbar-top {
             background-color: black;
@@ -88,9 +91,18 @@ if (isset($_GET['delete_id'])) {
             color: white;
             background-color: transparent;
             border: none;
+            text-decoration: none;
         }
         .navbar-top .btn:hover {
             color: #ddd;
+        }
+        .social-icons a {
+            color: #a8d5e2;
+            text-decoration: none;
+        }
+        .social-icons i {
+            margin-right: 5px;
+            color: #a8d5e2;
         }
     </style>
 </head>
@@ -113,18 +125,17 @@ if (isset($_GET['delete_id'])) {
 </div>
 
 <div class="navbar-bottom">
-    <p>&copy; 2024 Meru Law Court Library Management System | 
-   
+    <p>&copy; 2024 Meru Law Court Library Management System |</p>
     <div class="social-icons">
-    Contact us at: <i class="fas fa-phone-alt"></i> <a href="tel:+254722790240">+254 722 790 240</a> |
-            <a href="mailto:catemuthoni19@gmail.com"><i class="fas fa-envelope"></i> Email</a> |
-            <a href="https://wa.me/0722790240"><i class="fab fa-whatsapp"></i> WhatsApp</a> |
-           
+        Contact us at: <i class="fas fa-phone-alt"></i> <a href="tel:+254722790240">+254 722 790 240</a> |
+        <a href="mailto:catemuthoni19@gmail.com"><i class="fas fa-envelope"></i> Email</a> |
+        <a href="https://wa.me/0722790240"><i class="fab fa-whatsapp"></i> WhatsApp</a>
     </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> <!-- FontAwesome for icons -->
 </body>
 </html>

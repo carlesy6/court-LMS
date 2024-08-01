@@ -1,6 +1,6 @@
 <?php
 // Include database connection
-include('db.php'); // This ensures $conn is available in this script
+include('db.php'); // This ensures $pdo is available in this script
 
 session_start(); // Start the session
 
@@ -14,35 +14,62 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if ($role == 'librarian') {
             // Prepare a statement to get librarian details
-            $stmt = $conn->prepare("SELECT id, password FROM librarians WHERE username = ?");
-            $stmt->bind_param("s", $username); // Bind username parameter
+            $stmt = $pdo->prepare("SELECT id, password FROM librarians WHERE username = ?");
+            $stmt->execute([$username]); // Execute the prepared statement with bound parameters
+            $result = $stmt->fetch(PDO::FETCH_ASSOC); // Fetch results
+
+            // Check if a row was returned
+            if ($result) {
+                $id = $result['id'];
+                $hashed_password = $result['password'];
+
+                // Verify the password
+                if (password_verify($password, $hashed_password)) {
+                    // Store user information in session
+                    $_SESSION['user_id'] = $id;
+                    $_SESSION['username'] = $username;
+                    $_SESSION['role'] = $role;
+                    
+                    // Redirect both roles to the same dashboard
+                    header("Location: index.php"); // Redirect to the librarian dashboard
+                    exit;
+                } else {
+                    echo "Invalid username or password!";
+                }
+            } else {
+                echo "Invalid username or password!";
+            }
         } else if ($role == 'admin') {
             // Prepare a statement to get admin details
-            $stmt = $conn->prepare("SELECT id, password FROM users WHERE username = ? AND role = ?");
-            $stmt->bind_param("ss", $username, $role); // Bind username and role parameters
+            $stmt = $pdo->prepare("SELECT id, password FROM users WHERE username = ? AND role = ?");
+            $stmt->execute([$username, $role]); // Execute the prepared statement with bound parameters
+            $result = $stmt->fetch(PDO::FETCH_ASSOC); // Fetch results
+
+            // Check if a row was returned
+            if ($result) {
+                $id = $result['id'];
+                $hashed_password = $result['password'];
+
+                // Verify the password
+                if (password_verify($password, $hashed_password)) {
+                    // Store user information in session
+                    $_SESSION['user_id'] = $id;
+                    $_SESSION['username'] = $username;
+                    $_SESSION['role'] = $role;
+                    
+                    // Redirect both roles to the same dashboard
+                    header("Location: index.php"); // Redirect to the librarian dashboard
+                    exit;
+                } else {
+                    echo "Invalid username or password!";
+                }
+            } else {
+                echo "Invalid username or password!";
+            }
         } else {
             echo "Invalid role selected!";
             exit; // Exit if an invalid role is selected
         }
-
-        $stmt->execute(); // Execute the prepared statement
-        $stmt->bind_result($id, $hashed_password); // Bind result variables
-        $stmt->fetch(); // Fetch results
-
-        // Verify the password
-        if (password_verify($password, $hashed_password)) {
-            // Store user information in session
-            $_SESSION['user_id'] = $id;
-            $_SESSION['username'] = $username;
-            $_SESSION['role'] = $role;
-            header("Location: librarian_dashboard.php"); // Redirect to dashboard or another page
-            exit;
-        } else {
-            echo "Invalid username or password!";
-        }
-
-        // Close the statement
-        $stmt->close();
     } else {
         echo "Please select a role!";
     }

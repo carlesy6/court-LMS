@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 28, 2024 at 12:44 AM
+-- Generation Time: Aug 01, 2024 at 02:21 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -58,7 +58,8 @@ CREATE TABLE `clients` (
 --
 
 INSERT INTO `clients` (`id`, `name`, `id_no`, `phone`) VALUES
-(1, 'emmanuel', '32447', '0765432454');
+(1, 'samuel', '32447', '0765432454'),
+(3, 'emmanuel', '32447432', '0765432454');
 
 -- --------------------------------------------------------
 
@@ -81,7 +82,9 @@ CREATE TABLE `librarians` (
 --
 
 INSERT INTO `librarians` (`id`, `full_name`, `username`, `phone`, `email`, `password`, `created_at`) VALUES
-(1, 'OTIENO CELESTINO ONYANGO', 'ONYANGO', '0759967367', 'ictclassintake@gmail.com', '$2y$10$f7.1Y30NzDpkx5UiBFhgbOUkH20xTx1P6olqfbrVZSblnYqDqc1Va', '2024-07-27 21:53:43');
+(1, 'OTIENO CELESTINO ONYANGO', 'ONYANGO', '0759967367', 'ictclassintake@gmail.com', '$2y$10$f7.1Y30NzDpkx5UiBFhgbOUkH20xTx1P6olqfbrVZSblnYqDqc1Va', '2024-07-27 21:53:43'),
+(2, 'PAUL OMONDI', 'pp', '0789674532', 'njorogestanley18fr6@gmail.com', '$2y$10$9m7slSHQEw89j7xTK7OexeakNL/qpV4ZFugCfL8q7QGZumWIyUZP2', '2024-07-31 22:12:45'),
+(3, 'PAUL OMONDI', 'NJERI', '0759967367', 'njorogestanley186SF@gmail.com', '$2y$10$wGFi77HF14agaTYhMucZvuspBkGNSNAVvNgpIK1h7v41oMWifhNQe', '2024-07-31 23:27:44');
 
 -- --------------------------------------------------------
 
@@ -112,9 +115,11 @@ CREATE TABLE `resources` (
 --
 
 INSERT INTO `resources` (`id`, `resource_number`, `accession_no`, `title`, `author`, `edition`, `volume`, `publisher`, `year_of_publication`, `isbn`, `class`, `station`, `status`, `resource_type`, `index_number`) VALUES
-(1, 1, '740', 'KENYA LAW REPORT', 'GLADYS BOSS SHOLEI', '-', '2', 'NATIONAL COUNCIL FOR LAW REPORTING', '2004', '9966-821-01-5', '-', 'MERU', 'available', 'Case Book', NULL),
-(2, 2, '559', 'EAST AFRICA LAW REPORT', 'LE PELLEY', '-', '-', 'PROFESSIONAL BOOKS LTD', '1970', '-', '-', 'MERU', 'available', 'Case Book', NULL),
-(4, 3, '876', 'hgjg', 'yfn', '6', '8', 'PROFFESSIONAL BOOKS LTD', '2004', '37575889', '-', 'MERU', 'borrowed', 'Case Book', NULL);
+(12, 9, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'available', 'Bound High Court Decision', '2312'),
+(13, 10, '324238', 're', 'GLADYS BOSS SHOLEI', 'sf', '321', '54et6', '2023', '9966-821-01-5', '234', '23', 'available', 'Case Book', NULL),
+(14, 11, '898', 'fsd', 'LE PELLEY', '234', '2', '23', '2023', '23234', '53', '2', 'borrowed', 'Case Book', NULL),
+(15, 12, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'available', 'Bound High Court Decision', '54643'),
+(16, 13, '123', '123', '123', '123', '123', '123', '0000', '123', '123', '123', 'borrowed', 'Case Book', NULL);
 
 --
 -- Triggers `resources`
@@ -160,9 +165,10 @@ CREATE TABLE `transactions` (
 --
 
 INSERT INTO `transactions` (`id`, `user_id`, `resource_id`, `action`, `transaction_date`, `borrowed_on`) VALUES
-(1, NULL, 4, 'borrowed', '2024-07-26 22:04:56', '2024-07-27 09:50:54'),
-(2, NULL, 4, 'returned', '2024-07-26 22:09:42', '2024-07-27 09:50:54'),
-(3, 1, 4, 'borrowed', '2024-07-26 22:41:14', '2024-07-27 09:50:54');
+(5, NULL, 14, 'borrowed', '2024-07-31 23:18:40', '2024-07-31 16:18:40'),
+(6, NULL, 14, 'returned', '2024-07-31 23:22:32', '2024-07-31 16:22:32'),
+(7, 2, 14, 'borrowed', '2024-07-31 23:36:36', '2024-07-31 16:36:36'),
+(8, 2, 16, 'borrowed', '2024-08-01 00:03:16', '2024-07-31 17:03:16');
 
 -- --------------------------------------------------------
 
@@ -186,7 +192,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `full_name`, `username`, `phone`, `email`, `password`, `role`, `created_at`) VALUES
-(1, 'OTIENO CELESTINO ONYANGO', 'OTIENO', '0714019736', 'onyangocelestino@gmail.com', '$2y$10$w2kPSmuVRdJpev9MbTjUfebkcq8o/xl72RMTO3BkxQJuWwTB9028m', 'admin', '2024-07-27 21:50:09');
+(2, 'Ann Njeri', 'Ann', '0789674532', 'njorogestanley186@gmail.com', '$2y$10$3TcFSYQhTluikxP0Kit9EeVWRWbXL6mYvmVmwr7FQ7L0daaTAlq02', 'admin', '2024-07-31 21:36:32'),
+(3, 'OTIENO CELESTINO ONYANGO', 'njorogesta', '0759967367', 'poppixiieempire@gmail.com', '$2y$10$m9WTG4oT1Fs7jWAg6lW5FO/ukpICUxslEeI.1/IbXf1TOh70Av54i', 'admin', '2024-07-31 22:13:13');
 
 --
 -- Indexes for dumped tables
@@ -235,7 +242,6 @@ ALTER TABLE `settings`
 --
 ALTER TABLE `transactions`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`),
   ADD KEY `user_id` (`user_id`),
   ADD KEY `resource_id` (`resource_id`);
 
@@ -258,16 +264,22 @@ ALTER TABLE `admins`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `clients`
+--
+ALTER TABLE `clients`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `librarians`
 --
 ALTER TABLE `librarians`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `resources`
 --
 ALTER TABLE `resources`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `settings`
@@ -279,13 +291,13 @@ ALTER TABLE `settings`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
